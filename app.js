@@ -34,8 +34,32 @@ function priorityLabel(priority) {
   return priority ? priority : "Unspecified";
 }
 
+const FILTERS = ["All", "High", "Medium", "Low"];
+const EMPTY_MESSAGE = "No requests match this filter.";
+
+// Returns the requests to show for a filter. Never changes the input list or its order.
+// "All" shows everything, including requests with a missing or unrecognized priority.
+function filterRequests(requests, filter) {
+  if (filter === "All") return requests.slice();
+  return requests.filter((r) => r.priority === filter);
+}
+
+function countText(visible, total) {
+  return `Showing ${visible} of ${total} requests`;
+}
+
 function renderRows(requests) {
   const tbody = document.getElementById("request-rows");
+  if (requests.length === 0) {
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+    td.colSpan = 5;
+    td.className = "empty-message";
+    td.textContent = EMPTY_MESSAGE;
+    tr.appendChild(td);
+    tbody.replaceChildren(tr);
+    return;
+  }
   tbody.replaceChildren(
     ...requests.map((r) => {
       const tr = document.createElement("tr");
@@ -53,7 +77,25 @@ function renderRows(requests) {
 
 function init() {
   let added = loadAddedRequests();
+  let currentFilter = "All";
   const allRequests = () => [...SAMPLE_REQUESTS, ...added];
+  const buttons = document.querySelectorAll(".filter-button");
+
+  function render() {
+    const all = allRequests();
+    const visible = filterRequests(all, currentFilter);
+    renderRows(visible);
+    document.getElementById("request-count").textContent = countText(visible.length, all.length);
+    buttons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.filter === currentFilter)));
+  }
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!FILTERS.includes(button.dataset.filter)) return;
+      currentFilter = button.dataset.filter;
+      render();
+    });
+  });
 
   document.getElementById("request-form").addEventListener("submit", (event) => {
     event.preventDefault();
@@ -72,10 +114,13 @@ function init() {
     ];
     saveAddedRequests(added);
     form.reset();
-    renderRows(allRequests());
+    render();
   });
 
-  renderRows(allRequests());
+  render();
 }
 
 if (typeof document !== "undefined") init();
+if (typeof module !== "undefined") {
+  module.exports = { SAMPLE_REQUESTS, FILTERS, EMPTY_MESSAGE, filterRequests, countText };
+}

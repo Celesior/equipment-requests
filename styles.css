@@ -18,6 +18,12 @@ button { font: inherit; padding: 7px 14px; border-radius: 6px; border: 1px solid
 table { width: 100%; border-collapse: collapse; }
 th, td { text-align: left; padding: 8px; border-bottom: 1px solid #eaeef2; }
 th { font-size: 0.8rem; text-transform: uppercase; color: #59636e; }
+.filter-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.filter-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
+.filter-button { background: #fff; color: #1f2328; border-color: #d1d9e0; }
+.filter-button[aria-pressed="true"] { background: #1f6feb; border-color: #1f6feb; color: #fff; }
+.request-count { margin: 0; color: #59636e; font-size: 0.9rem; }
+.empty-message { text-align: center; color: #59636e; padding: 20px 8px; }
 .priority { font-weight: 600; }
 .priority-high { color: #cf222e; }
 .priority-medium { color: #9a6700; }
