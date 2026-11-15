@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Equipment Requests</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Equipment Requests</h1>
+    <p class="subtitle">Track equipment requests from staff. No login or database required.</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>New request</h2>
+      <form id="request-form">
+        <label>Requester
+          <input name="requester" required>
+        </label>
+        <label>Equipment
+          <input name="item" required>
+        </label>
+        <label>Priority
+          <select name="priority">
+            <option>High</option>
+            <option selected>Medium</option>
+            <option>Low</option>
+          </select>
+        </label>
+        <button type="submit">Add request</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>All requests</h2>
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Requester</th><th>Equipment</th><th>Priority</th><th>Submitted</th></tr>
+        </thead>
+        <tbody id="request-rows"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
