@@ -1,7 +1,7 @@
 // Run with: node --test tests/
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { SAMPLE_REQUESTS, EMPTY_MESSAGE, filterRequests, countText } = require("../app.js");
+const { SAMPLE_REQUESTS, EMPTY_MESSAGE, filterRequests, countText, priorityLabel } = require("../app.js");
 
 const ids = (list) => list.map((r) => r.id);
 
@@ -45,4 +45,16 @@ test("Filtering never changes the source data", () => {
   const before = JSON.stringify(SAMPLE_REQUESTS);
   for (const f of ["All", "High", "Medium", "Low"]) filterRequests(SAMPLE_REQUESTS, f);
   assert.equal(JSON.stringify(SAMPLE_REQUESTS), before);
+});
+
+test("Rule 5: unrecognized priorities are labeled Unspecified and shown only under All", () => {
+  for (const value of ["", undefined, "Urgent", "high"]) {
+    assert.equal(priorityLabel(value), "Unspecified", String(value));
+  }
+  for (const level of ["High", "Medium", "Low"]) assert.equal(priorityLabel(level), level);
+  const withUrgent = [...SAMPLE_REQUESTS, { id: 9, requester: "X", item: "Y", priority: "Urgent", submitted: "2026-11-10" }];
+  for (const level of ["High", "Medium", "Low"]) {
+    assert.ok(!ids(filterRequests(withUrgent, level)).includes(9), level);
+  }
+  assert.ok(ids(filterRequests(withUrgent, "All")).includes(9));
 });

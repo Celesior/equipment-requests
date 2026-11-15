@@ -30,11 +30,13 @@ function saveAddedRequests(added) {
   }
 }
 
-function priorityLabel(priority) {
-  return priority ? priority : "Unspecified";
-}
-
 const FILTERS = ["All", "High", "Medium", "Low"];
+const PRIORITY_LEVELS = ["High", "Medium", "Low"];
+
+// Spec Functional Rule 5: missing or unrecognized priorities are labeled "Unspecified".
+function priorityLabel(priority) {
+  return PRIORITY_LEVELS.includes(priority) ? priority : "Unspecified";
+}
 const EMPTY_MESSAGE = "No requests match this filter.";
 
 // Returns the requests to show for a filter. Never changes the input list or its order.
@@ -122,5 +124,5 @@ function init() {
 
 if (typeof document !== "undefined") init();
 if (typeof module !== "undefined") {
-  module.exports = { SAMPLE_REQUESTS, FILTERS, EMPTY_MESSAGE, filterRequests, countText };
+  module.exports = { SAMPLE_REQUESTS, FILTERS, EMPTY_MESSAGE, filterRequests, countText, priorityLabel };
 }
