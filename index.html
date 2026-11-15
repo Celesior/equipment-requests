@@ -35,6 +35,15 @@
 
     <section class="card">
       <h2>All requests</h2>
+      <div class="filter-bar">
+        <div class="filter-buttons" role="group" aria-label="Filter by priority">
+          <button type="button" class="filter-button" data-filter="All" aria-pressed="true">All</button>
+          <button type="button" class="filter-button" data-filter="High" aria-pressed="false">High</button>
+          <button type="button" class="filter-button" data-filter="Medium" aria-pressed="false">Medium</button>
+          <button type="button" class="filter-button" data-filter="Low" aria-pressed="false">Low</button>
+        </div>
+        <p id="request-count" class="request-count" aria-live="polite"></p>
+      </div>
       <table>
         <thead>
           <tr><th>ID</th><th>Requester</th><th>Equipment</th><th>Priority</th><th>Submitted</th></tr>
